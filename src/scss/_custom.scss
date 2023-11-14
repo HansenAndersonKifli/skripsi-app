@@ -1,0 +1,543 @@
+// Here you can add other styles
+@import "./themes/resets.scss";
+
+@import "./themes/styles.scss";
+@import "./themes/animate.scss";
+@import "./themes/typography/block-display.scss";
+@import "./themes/typography/block-title.scss";
+
+/// custom
+// below is for edge (issue with auto show icon in input on edge)
+input::-ms-clear,
+input::-ms-reveal {
+  visibility: hidden;
+}
+
+// below is for safari (issue with auto show icon in input on edge)
+// idk why below code cannot be merged with ::-ms-clear and ::-ms-reveal above
+// please do not change this unless you know what you are doing
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+}
+
+.svg-fill {
+  fill: currentColor;
+}
+.svg-stroke {
+  stroke: currentColor;
+}
+
+.text-underlined-hover:hover,
+.text-underlined,
+.text-underlined:hover {
+  text-decoration: underline;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+.clickable {
+  @include clickable();
+}
+
+.transparent-bg-important .nav-link.active {
+  background-color: transparent !important;
+}
+
+.transparent-bg-important .nav-link.active .nav-icon {
+  color: white !important;
+}
+
+.circle {
+  background: $binus-blue;
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
+  max-width: 10px;
+  max-height: 10px;
+  border-radius: 50%;
+
+  &.red-circle {
+    background: red;
+  }
+
+  &.white-circle {
+    background: white;
+  }
+
+  &.transparent {
+    background: transparent;
+  }
+
+  &.small-circle {
+    width: 5px;
+    height: 5px;
+    min-width: 5px;
+    min-height: 5px;
+    max-width: 5px;
+    max-height: 5px;
+  }
+
+  &.eightpx-circle {
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    min-height: 8px;
+    max-width: 8px;
+    max-height: 8px;
+  }
+}
+
+/// width
+.width-48-percent {
+  width: 48%;
+}
+
+.width-40-percent {
+  width: 40%;
+}
+
+.width-45-percent {
+  width: 45%;
+}
+
+.width-20-percent {
+  width: 20%;
+}
+
+.width-55-percent {
+  width: 55%;
+}
+
+.max-width-55-percent {
+  max-width: 55%;
+}
+
+.width-100-px {
+  width: 100px;
+}
+
+.width-16-px {
+  width: 16px;
+}
+
+.width-130-px {
+  width: 130px;
+}
+
+/// elipsis
+.ellipsis-five-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  max-height: 95px;
+}
+
+.ellipsis-two-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 60px;
+}
+
+.ellipsis-one-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  max-height: 30px;
+}
+
+/// border
+.br-10 {
+  border-radius: 10px;
+}
+
+.br-15 {
+  border-radius: 15px !important;
+}
+
+.br-20 {
+  border-radius: 20px !important;
+}
+
+.br-top-right-10px {
+  border-top-right-radius: 10px !important;
+}
+
+.br-top-left-10px {
+  border-top-left-radius: 10px !important;
+}
+
+.br-bottom-right-10px {
+  border-bottom-right-radius: 10px !important;
+}
+
+.br-bottom-left-10px {
+  border-bottom-left-radius: 10px !important;
+}
+
+/// font size
+.font-size-24px {
+  font-size: 24px !important;
+}
+
+.font-size-20px {
+  font-size: 20px !important;
+}
+
+.font-size-15px {
+  font-size: 15px;
+}
+
+.font-size-13px {
+  font-size: 13px !important;
+}
+
+.font-size-16px {
+  font-size: 16px !important;
+}
+
+.font-size-14px {
+  font-size: 14px !important;
+}
+
+.font-size-12px {
+  font-size: 12px !important;
+}
+
+.font-size-18px {
+  font-size: 18px !important;
+}
+
+.font-size-10px {
+  font-size: 10px !important;
+}
+
+/// margin
+.ml-50px {
+  margin-left: 50px;
+}
+
+.mt-55px {
+  margin-top: 55px;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.height-150px {
+  height: 150px;
+}
+
+.height-33px {
+  height: 33px;
+}
+
+.height-80px {
+  height: 80px;
+}
+
+.height-100percent {
+  height: 100%;
+}
+
+// see utilities/Styling.ts
+.auto-overflow {
+  overflow: auto;
+  &-x {
+    overflow-x: auto;
+  }
+  &-y {
+    overflow-y: auto;
+  }
+}
+// see utilities/Styling.ts
+.no-padding {
+  // karena posisinya ada di stack terbawah
+  padding: 0 !important;
+  &-x {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  &-y {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+/// page style
+// -----------------------------------------------------------------------------
+.page {
+  &-name {
+    &-wrapper {
+      margin-bottom: $gap-normal;
+    }
+    &-text {
+      display: block;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+  }
+  &-title {
+    &-wrapper {
+    }
+    &-text {
+      margin: 0;
+      font-size: 1.7em;
+    }
+  }
+  &-subtitle {
+    &-wrapper {
+      margin-top: $gap-small;
+    }
+    &-text {
+      margin: 0;
+      font-size: 1em;
+    }
+  }
+}
+
+.C--tabs.type-1 .tab-item .nav-link.black-color {
+  color: black;
+}
+
+.button-alert {
+  width: 60px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: transparent;
+  border-radius: 5px;
+}
+
+.color-binus-blue {
+  color: $binus-blue;
+}
+
+.background-color-white {
+  background-color: white;
+}
+
+// gunakan ini saat ada link action
+.bm-action {
+  @include clickable();
+}
+
+.hide-scroller ::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+
+.text-behave-link {
+  color: #0098d7;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.text-area-resize-none {
+  resize: none;
+}
+
+.clickable-like-link {
+  color: #0097da !important;
+  cursor: pointer !important;
+  font-weight: normal !important;
+
+  &:hover {
+    text-decoration: underline !important;
+
+    &.no-hover {
+      text-decoration: none !important;
+    }
+  }
+
+  &.disabled-link {
+    cursor: default !important;
+    text-decoration: none !important;
+  }
+}
+
+.width-fit-content {
+  width: fit-content;
+}
+
+.min-width16px {
+  min-width: 16px;
+}
+
+ul.dashed {
+  list-style-type: none;
+}
+
+ul.dashed > li:before {
+  content: "- ";
+}
+
+.height-100vh {
+  height: 100vh;
+}
+
+.ml-6 {
+  margin-left: 5rem !important;
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.background-color-incomplete {
+  background-color: $incomplete-background;
+}
+
+.table-odd-row {
+  background-color: white;
+}
+
+.table-even-row {
+  background-color: #fafafa;
+}
+
+.input-positive-number {
+  border-color: rgb(204, 204, 204);
+  height: 38px;
+  font-size: 14px;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+
+  &:focus {
+    border-color: rgb(38, 132, 255);
+    box-shadow: rgb(38, 132, 255) 0px 0px 0px 1px;
+  }
+}
+
+.pad-1rem {
+  padding: 1rem;
+}
+
+.page-title-global {
+  font-size: 24px;
+  margin: 0px;
+}
+
+.empty-div {
+  line-height: 1.6;
+  padding: 10px 20px;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.disabled-bg {
+  background: #f2f2f2 !important;
+}
+// override form-control
+.form-control {
+  color: black;
+}
+
+.red-bg-white-text {
+  background: #d73930;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+  margin-right: 1rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 7px;
+}
+
+.required-field::after {
+  content: "*";
+  color: red;
+}
+
+.modal-header .close span {
+  font-size: 30px;
+}
+
+.loading-div {
+  position: relative;
+  color: transparent;
+  &:hover {
+    color: transparent;
+  }
+  &:after {
+    display: block;
+    position: absolute;
+    top: calc(50% - (20px / 2));
+    left: calc(50% - (20px / 2));
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-radius: 290486px;
+    border-right-color: black;
+    border-top-color: black;
+    -webkit-animation: spin-around 0.5s infinite linear;
+    animation: spin-around 0.5s infinite linear;
+  }
+}
+
+.lh-half {
+  line-height: 0.5em;
+}
+
+.top-min-9 {
+  top: -9px !important;
+}
+
+.modal-title-global h5.modal-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.min-height-20px {
+  min-height: 20px;
+}
+
+.alert > button > span {
+  font-size: 2rem;
+}
+
+// TODO
+// temporary fix untuk gak bisa scroll saat view kecil
+.sidebar-lg-show {
+  overflow: auto !important;
+
+  &.modal-open{
+    overflow: hidden !important;
+  }
+}
+
+.sidebar-show {
+  overflow: hidden !important;
+}
+
+.opacity-full {
+  opacity: 1 !important;
+}
+
+.mr-8px {
+  margin-right: 8px;
+}

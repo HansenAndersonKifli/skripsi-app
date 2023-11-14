@@ -1,0 +1,17 @@
+/// import global scss here instead of import this local scss to global scss folder
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+/// create class name here
+.c-page-region {
+  // padding-left: $gap-medium;
+  // padding-right: $gap-medium;
+  &:not(.use-margin) {
+    padding: $gap-medium;
+  }
+
+  &.use-margin {
+    margin: $gap-medium;
+  }
+
+}

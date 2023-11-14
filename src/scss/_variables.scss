@@ -1,0 +1,40 @@
+// Variable overrides
+@charset "utf-8";
+
+@import "~@coreui/coreui/scss/variables";
+
+@import "./themes/variables.scss";
+
+
+$color-gray-be: #bebebe;
+$gray-D8D8D8: #D8D8D8;
+$gray-CCCCCC: #CCCCCC;
+$orange-theme: #F29115;
+$binus-blue: #0097da;
+$binus-dark-blue: #015581;
+$incomplete: #ff4e45;
+$incomplete-background: #ffdcda;
+
+$gap-small: 10px;
+$gap-normal: 15px;
+$gap-medium: 20px;
+$gap-large: 30px;
+
+$deliv-mode-virtual-class: #880F88;
+$deliv-mode-onsite: #666666;
+$deliv-mode-online: #028ED5;
+$deliv-mode-other: #D73930;
+
+$dark-orange-thene: #D8800E;
+// /**
+//  * Define global configuration variable.
+//  */
+// $primary-color: #0366d6;
+// $text-color: #333;
+// $border-color: rgba(0,0,0,.08);
+
+// // screen resolution
+// $screen-extra-small: 480px;
+// $screen-small: 768px;
+// $screen-medium: 1024px;
+// $screen-large: 1200px;

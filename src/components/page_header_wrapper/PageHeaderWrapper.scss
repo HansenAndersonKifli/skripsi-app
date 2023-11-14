@@ -1,0 +1,25 @@
+/// import global scss here instead of import this local scss to global scss folder
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+/// create class name here
+.c-page-header-wrapper {
+  background-color: #484454;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+
+  // padding-left: $gap-medium;
+  // padding-right: $gap-medium;
+  &:not(.use-margin) {
+    padding-left: $gap-medium;
+    padding-right: $gap-medium;
+    padding-top: $gap-small;
+    padding-bottom: $gap-small;
+  }
+
+  &.use-margin {
+    margin: $gap-medium;
+  }
+
+}
