@@ -20,11 +20,12 @@
 
 .cards-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Menampilkan 2 kartu per baris */
-    gap: 20px; /* Jarak antara kartu */
+    grid-template-columns: repeat(2, 1fr); /* 2 card per baris */
+    gap: 20px; /* jarak antara card */
     width: 1450px;
 }
 
+/* card */
 .card {
     border: 1px solid #ccc;
     padding: 10px;
@@ -36,8 +37,16 @@
     width: 100%;
 }
 
+.card-text {
+  padding: 10px;
+  max-width: auto;
+  width: 100%;
+}
+
+/* gambar di card */
 .card img {
-    max-width: 300px;
+    max-width: 250px;
+    min-width: 250px;
     height: auto;
     margin-right: 10px;
 }

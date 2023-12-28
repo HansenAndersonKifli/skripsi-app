@@ -23,21 +23,23 @@ class Layout extends Component<any, any> {
   render() {
 
     return (
-      <PageWrapper>
-        <PageHeaderWrapper>
-          <Helmet>
-            <title>APPS</title>
-          </Helmet>
-          <h2 className="page-title-global pl-3">Nama Website</h2>
-          {/* <NavbarMenu/> */}
-          <div className="nav-area">
-              <NavbarMenu />
-          </div>
+      <NavbarMenu/>
+        
+      // <PageWrapper>
+      //   <PageHeaderWrapper>
+      //     <Helmet>
+      //       <title>APPS</title>
+      //     </Helmet>
+      //     <h2 className="page-title-global pl-3">Nama Website</h2>
+      //     {/* <NavbarMenu/> */}
+      //     <div className="nav-area">
+      //         <NavbarMenu />
+      //     </div>
           
-        </PageHeaderWrapper>
-        <hr className="my-0" />
+      //   </PageHeaderWrapper>
+      //   <hr className="my-0" />
 
-      </PageWrapper>
+      // </PageWrapper>
 
     );
   }

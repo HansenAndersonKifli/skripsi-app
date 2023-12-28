@@ -1,21 +1,78 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from '../routes/home';
 import MakananDanMinuman from '../makanan_dan_minuman/MakananDanMinuman';
 import About from '../routes/About';
 import HomePage from '../home/HomePage';
 import CardDetail from '../home/components/CardDetail';
+// import LoginAndRegister from '../login_dan_register/LoginDanRegister';
+// import Profile from '../profile/profile';
+import { useContext, useEffect } from 'react';
+import Signup from '../SignIn/SignUp';
+import Login from '../SignIn/SignIn';
+// import ProtectedRoute from '../../components/ProtectedRoute';
+import { AuthContext } from '../../context/UserAuthContext';
+import RequireAuth from '../../firebase/RequireAuth';
+import Profile from '../Profile';
+import Furnitur from '../furnitur/Furnitur';
+import CardDetail2 from '../home/components/CardDetail2';
+import SubmitForm from '../submit_form/SubmitForm';
+// import { AuthContext } from '../../context/AuthContext';
+// import RequireAuth from '../../components/require-auth';
 
 const App = () => {
+  const { currentUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  // // NOTE: console log for testing purposes
+  console.log('User:', !!currentUser);
+
+  // Check if the current user exists on the initial render.
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     navigate('/')
+  //   }
+  // }, [currentUser])
+
+  
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           {/* <Route path="home" element={<HomePage />} /> */}
-          <Route path="about" element={<About />} />
-          <Route path="card-detail" element={<CardDetail />} />
-          <Route path="makanan-dan-minuman" element={<MakananDanMinuman />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/card-detail/:id" element={<CardDetail />} />
+          <Route path="/card-detail" element={<CardDetail2 />} />
+          <Route path="/makanan-dan-minuman" element={<MakananDanMinuman />} />
+          <Route path="/furnitur" element={<Furnitur />} />
+          {/* <Route path="makanan-dan-minuman" element={
+            <RequireAuth>
+              <MakananDanMinuman />
+            </RequireAuth>}
+          /> */}
+          <Route path="/profile" element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>}
+          />
+          <Route path="/submit-form" element={
+            <RequireAuth>
+              <SubmitForm />
+            </RequireAuth>}
+          />
+          {/* <Route path="profile" element={currentUser ? <Profile />: <Home />} /> */}
+          {/* <Route
+              path="makanan-dan-minuman"
+              element={
+                <ProtectedRoute>
+                  <MakananDanMinuman />
+                </ProtectedRoute>
+              }
+            /> */}
+          <Route path="/sign-up" element={<Signup />} />
+          <Route path="/sign-in" element={<Login />} />
           <Route path="*" element={<p>Not found!</p>} />
         </Route>
       </Routes>
