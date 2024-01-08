@@ -1,4 +1,4 @@
-import { menuItems, menuItems2 } from './MenuItems';
+import { menuAdmin, menuItems, menuItems2 } from './MenuItems';
 import MenuItems from './Menu';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -24,6 +24,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const NavbarMenu = () => {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext)
+  console.log("currentUser: ", currentUser?.email);
+  const email = currentUser?.email;
+  console.log("email", email);
  
   const handleLogout = () => {               
       signOut(auth).then(() => {
@@ -35,6 +38,8 @@ const NavbarMenu = () => {
         console.log("error")
       });
   }
+
+  
 
   return (
     <>
@@ -51,6 +56,54 @@ const NavbarMenu = () => {
           <Nav className="mr-auto">
             {/* dropdown menu nya */}
             {
+              currentUser && currentUser.email !== 'admin@gmail.com' && (
+                <Nav.Link>
+                  {menuItems.map((menu, index) => {
+                    const depthLevel = 0;
+                    return (
+                      <MenuItems
+                        items={menu}
+                        key={index}
+                        depthLevel={depthLevel}
+                      />
+                    );
+                  })}
+                </Nav.Link>
+              )
+            }
+            {
+              currentUser && currentUser.email === 'admin@gmail.com' && (
+                <Nav.Link>
+                  {menuAdmin.map((menu, index) => {
+                    const depthLevel = 0;
+                    return (
+                      <MenuItems
+                        items={menu}
+                        key={index}
+                        depthLevel={depthLevel}
+                      />
+                    );
+                  })}
+                </Nav.Link>
+              )
+            }
+            {
+              !currentUser && (
+                <Nav.Link>
+                  {menuItems2.map((menu, index) => {
+                    const depthLevel = 0;
+                    return (
+                      <MenuItems
+                        items={menu}
+                        key={index}
+                        depthLevel={depthLevel}
+                      />
+                    );
+                  })}
+                </Nav.Link>
+              )
+            }
+            {/* {
               currentUser ? (
                 //uda login
                 <Nav.Link>
@@ -91,8 +144,8 @@ const NavbarMenu = () => {
                 //   <Nav.Link href="/about">About</Nav.Link> 
                 //   <Nav.Link href="/sign-in">Sign In</Nav.Link> 
                 // </>
-              )
-            }
+              ) 
+            } */}
             {/* <NavDropdown title="Other" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

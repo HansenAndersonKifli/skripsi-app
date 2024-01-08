@@ -3,47 +3,135 @@ import { db } from '../../firebase/firebaseSetup';
 import "../SignIn/SignIn.css"
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from 'firebase/firestore';
+import { useNavigate } from 'react-router';
 
 const SubmitForm = () => {
-    const [text, setText] = useState<string>('');
+    const [namaUsaha, setNamaUsaha] = useState<string>('');
+    const [lokasiUsaha, setLokasiUsaha] = useState<string>('');
+    const [deskripsiUsaha, setDeskripsiUsaha] = useState<string>('');
+    const [noTelp, setNoTelp] = useState<string>('');
+    const [kategori, setKategori] = useState<string>('');
     const [image, setImage] = useState<File | null>(null);
+    const [gambarUsaha, setGambarUsaha] = useState<FileList | null>(null);
+    const [galleryImages, setGalleryImages] = useState<File[]>([]);
+    const showToggle = "Tidak";
+    const navigate = useNavigate();
     
-    const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.target.value);
-      };
-    
-      const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-          setImage(e.target.files[0]);
-        }
-      };
 
-      const handleSubmit = async (e: FormEvent) => {
+    // const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
+    //     if (file) setImage(file);
+    // };
+
+    const handleGalleryChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) setGalleryImages([...files]);
+    };
+
+    const uploadImage = async (file: File, path: string): Promise<string> => {
+        const storage = getStorage();
+        const storageRef = ref(storage, path);
+        await uploadBytes(storageRef, file);
+        return getDownloadURL(storageRef);
+    };
+    
+    const handleNamaUsahaChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setNamaUsaha(e.target.value);
+    };
+    const handleLokasiUsahaChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setLokasiUsaha(e.target.value);
+    };
+    const handleDeskripsiUsahaChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setDeskripsiUsaha(e.target.value);
+    };
+    const handleNoTelpChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setNoTelp(e.target.value);
+    };
+    const handleKategoriChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setKategori(e.target.value);
+    };
+    
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setImage(e.target.files[0]);
+        }
+    };
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
     
-        if (!image) {
-          console.error('Please select an image.');
+        if (!image || !galleryImages.length) {
+          console.error('Please select image(s).');
           return;
         }
+    
+        try {
+          // Upload main image
+          const imageUrl = await uploadImage(image, `images/${namaUsaha}/${image.name}`);
+    
+          // Upload gallery images
+          const galleryImageUrls = await Promise.all(
+            galleryImages.map(async (galleryImage) => {
+              return uploadImage(
+                galleryImage,
+                `galleryImages/${namaUsaha}/${galleryImage.name}`
+              );
+            })
+          );
+    
+          // Save data to Firestore
+          const docRef = await addDoc(collection(db, 'dataUsaha'), {
+            namaUsaha,
+            lokasiUsaha,
+            deskripsiUsaha,
+            noTelp,
+            kategori,
+            imageUrl,
+            galleryImageUrls,
+            showToggle
+          });
+          navigate('/');
+          console.log('Document written with ID: ', docRef.id);
+        } catch (error) {
+          console.error('Error writing document: ', error);
+        }
+    };
 
-        const storage = getStorage();
+    // const handleSubmit = async (e: FormEvent) => {
+    //     e.preventDefault();
 
-        // Upload image to Firebase Storage
-        const storageRef = ref(storage, `images/${image.name}`);
-        await uploadBytes(storageRef, image);
+    //     if (!image) {
+    //         console.error('Please select an image.');
+    //         return;
+    //     }
+
+    //     const storage = getStorage();
+
+    //     // Upload image to Firebase Storage
+    //     const storageRef = ref(storage, `images/${image.name}`);
+    //     await uploadBytes(storageRef, image);
+
+    //     // Get download URL
+    //     const imageUrl = await getDownloadURL(storageRef);
+
+    //     // Save text and image URL to Firestore
+    //     const docRef = await addDoc(collection(db, 'dataUsaha'), {
+    //         namaUsaha,
+    //         lokasiUsaha,
+    //         deskripsiUsaha,
+    //         noTelp,
+    //         kategori,
+    //         imageUrl,
+    //     });
+    //     console.log("docRef: ", docRef);
+
+    //     console.log('Document written with ID: ', docRef.id);
+    // };
     
-        // Get download URL
-        const imageUrl = await getDownloadURL(storageRef);
-    
-        // Save text and image URL to Firestore
-        const docRef = await addDoc(collection(db, 'dataUsaha'), {
-          text,
-          imageUrl,
-        });
-    
-        console.log('Document written with ID: ', docRef.id);
-      };
-    
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setKategori(e.target.value);
+    }
 
     return(
         <>
@@ -55,13 +143,30 @@ const SubmitForm = () => {
                     <label htmlFor="floatingInput">Nama Usaha</label>
                     <input
                         id="floatingInput"
-                        name="nama"
+                        name="namaUsaha"
                         type="text"  
                         className="form-control"
                         required                                                                                
                         placeholder="Nama Usaha"
-                        onChange={handleTextChange}
+                        onChange={handleNamaUsahaChange}
                     />
+                </div>
+
+                <div>
+                    <label htmlFor="kategori">Kategori:</label>
+                    <select
+                        id="kategori"
+                        name="kategori"
+                        value={kategori}
+                        onChange={(e) => setKategori(e.target.value)}
+                        >
+                        <option selected value="Klik untuk melihat pilihan"/>
+                        <option value="Makanan dan Minuman">Makanan dan Minuman</option>
+                        <option value="Furnitur">Furnitur</option>
+                        <option value="Otomotif">Otomotif</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Lain-lain">Lain-lain</option>
+                    </select>
                 </div>
 
                 <div className="form-floating pb-3">
@@ -73,7 +178,7 @@ const SubmitForm = () => {
                         className="form-control"
                         required                                                                                
                         placeholder="Deskripsi Usaha"
-                        onChange={handleTextChange}
+                        onChange={handleDeskripsiUsahaChange}
                     />
                 </div>
 
@@ -86,7 +191,7 @@ const SubmitForm = () => {
                         className="form-control"
                         required                                                                                
                         placeholder="Lokasi Usaha"
-                        onChange={handleTextChange}
+                        onChange={handleLokasiUsahaChange}
                     />
                 </div>
 
@@ -99,12 +204,12 @@ const SubmitForm = () => {
                         className="form-control"
                         required                                                                                
                         placeholder="No Telp"
-                        onChange={handleTextChange}
+                        onChange={handleNoTelpChange}
                     />
                 </div>
                 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingPassword">Gambar</label>
+                    <label htmlFor="floatingPassword">Foto Profil Usaha</label>
                     <input
                         id="floatingPassword"
                         name="image"
@@ -115,7 +220,22 @@ const SubmitForm = () => {
                         onChange={handleImageChange}
                     />
                 </div>
-                <button className="btn btn-primary w-100 py-2" type="submit" onClick={handleSubmit}>Sign in</button>
+
+                <div className="form-floating pb-3">
+                    <label htmlFor="floatingPassword">Foto Tambahan Untuk Galeri{'('}Bisa lebih dari 1{')'}</label>
+                    <input
+                        id="floatingPassword"
+                        name="gambarUsaha"
+                        type="file"  
+                        className="form-control"
+                        accept="image/*"
+                        required                                                                                
+                        placeholder="Password"
+                        multiple onChange={handleGalleryChange}
+                    />
+                </div>
+
+                <button className="btn btn-primary w-100 py-2" type="submit" onClick={handleSubmit}>Submit</button>
             </form>
         </main>
         </>

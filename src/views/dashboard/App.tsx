@@ -17,6 +17,10 @@ import Profile from '../Profile';
 import Furnitur from '../furnitur/Furnitur';
 import CardDetail2 from '../home/components/CardDetail2';
 import SubmitForm from '../submit_form/SubmitForm';
+import AdminPage from '../admin_page/AdminPage';
+import Otomotif from '../otomotif/Otomotif';
+import Elektronik from '../elektronik/Elektronik';
+import LainLain from '../lain_lain/LainLain';
 // import { AuthContext } from '../../context/AuthContext';
 // import RequireAuth from '../../components/require-auth';
 
@@ -42,11 +46,15 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           {/* <Route path="home" element={<HomePage />} /> */}
+          <Route path="/admin-page" element={currentUser?.email == "admin@gmail.com" ? <AdminPage />: <Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/card-detail/:id" element={<CardDetail />} />
           <Route path="/card-detail" element={<CardDetail2 />} />
           <Route path="/makanan-dan-minuman" element={<MakananDanMinuman />} />
           <Route path="/furnitur" element={<Furnitur />} />
+          <Route path="/otomotif" element={<Otomotif />} />
+          <Route path="/elektronik" element={<Elektronik />} />
+          <Route path="/lain-lain" element={<LainLain />} />
           {/* <Route path="makanan-dan-minuman" element={
             <RequireAuth>
               <MakananDanMinuman />

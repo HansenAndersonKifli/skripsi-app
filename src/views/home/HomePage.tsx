@@ -10,6 +10,7 @@ import { auth, db } from '../../firebase/firebaseSetup';
 import Login from '../SignIn/SignIn';
 import { AuthContext } from '../../context/UserAuthContext';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import Pagination from '../../components/pagination/Pagination';
 
 //   const cardsData = [
 //     {
@@ -67,11 +68,24 @@ import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 //   }
 // }
 
+interface IData {
+  id: string;
+  namaUsaha: string;
+  lokasiUsaha: string;
+  kategori: string;
+  deskripsiUsaha: string;
+  noTelp: string;
+  imageUrl: string;
+}
+
 function HomePage() {
   const [token, setToken] = useState();
   const navigate = useNavigate();
   const { title } = useParams();
-  const data = [];
+  const [data, setData] = useState<IData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  let PageSize = 10;
+
 
   // if(!token) {
   //   return <Login setToken={setToken}/>
@@ -98,7 +112,7 @@ function HomePage() {
     },
   ];
 
-  console.log("auth: ", auth);
+  // console.log("auth: ", auth);
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -117,19 +131,22 @@ function HomePage() {
 
   useEffect(()=>{
     const fetchData = async () => {
-      function sleep(ms: any) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-      }
-      //getData pake query
-      const q = query(collection(db, "dataUsaha"), where("kategori", "==", "Furnitur"));
-      // const querySnapshot = await getDocs(q);
-      const querySnapshot = await getDocs(q);
+      //getData
+      const q = query(collection(db, "dataUsaha"), where("showToggle", "==", "Iya"));
+      // const querySnapshot = await getDocs(collection(db, "dataUsaha"));
+      const querySnapshot = await getDocs(q);;
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        // console.log(`${doc.id} => ${doc.data()}`);
+        console.log("doc: ", doc.data());
       });
-      
-      await sleep(1000);
+
+      const newData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as IData[];
+
+      setData(newData);
+      console.log("newData: ", newData);
     }
     fetchData()
     // make sure to catch any error
@@ -140,18 +157,14 @@ function HomePage() {
 
 
   const currentUser = useContext(AuthContext);
-  // console.log("currentUser: ", currentUser.currentUser?.email);
+  console.log("currentUser: ", currentUser.currentUser?.email);
 
   //pergi ke detail yg dipilih
-  const handleCardClick = () => {
-    navigate('/card-detail');
+  const handleCardClick = (id: string) => {
+    navigate(`/card-detail/${id}`);
   };
 
   return (
-    // <div>
-    //   <h1>{title}</h1>
-    //   {/* ... */}
-    // </div>
     <>
     <h2>test</h2>
 
@@ -197,20 +210,27 @@ function HomePage() {
       ))}
     </div> */}
 
-    <div className="cards-container" onClick={handleCardClick}>
-      {cardsData.map((card, index) => (
-        <div className="card">
+    <div className="cards-container">
+      {data.map((card, index) => (
+        <div className="card" onClick={()=>handleCardClick(card.id)}>
           <svg className="bd-placeholder-img card-img-top" width="100%" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <image href={card.imgUrl} className="card-image" width="100%" 
+            <image href={card.imageUrl} className="card-image" width="100%" 
       height="100%" />
           </svg>
           <div className="card-body">
-            <h3 className="card-title">{card.imgTitle}</h3>
-            <p className="card-text">{card.desc}</p>
+            <h3 className="card-title">{card.namaUsaha}</h3>
+            <p className="card-text">{card.kategori}</p>
           </div>
         </div>
       ))}
     </div>
+    <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={data.length}
+        pageSize={PageSize}
+        onPageChange={(page:any) => setCurrentPage(page)} 
+        siblingCount={1}      />
     </>
   );
 }

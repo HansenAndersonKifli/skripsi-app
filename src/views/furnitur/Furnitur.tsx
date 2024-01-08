@@ -181,6 +181,7 @@ interface IData {
   namaUsaha: string;
   lokasiUsaha: string;
   kategori: string;
+  imageUrl: string;
 }
 
 const Furnitur: React.FC = () => {
@@ -192,7 +193,7 @@ const Furnitur: React.FC = () => {
       // Gantilah 'collectionName' dengan nama koleksi di Firestore Anda
       const collectionName = 'usaha';
       
-      const q = query(collection(db, "dataUsaha"), where("kategori", "==", "Furnitur"));
+      const q = query(collection(db, "dataUsaha"), where("kategori", "==", "Furnitur"), where("showToggle", "==", "Iya"));
 
       const querySnapshot = await getDocs(q);
       // const querySnapshot = await getDocs(collection(db, collectionName));
@@ -225,9 +226,10 @@ const Furnitur: React.FC = () => {
   return (
     <div>
       <h2>Data Usaha</h2>
-      <div>
+      {/* <div>
         {data.map((item) => (
           <div
+            className="card"
             key={item.id}
             onClick={() => handleCardClick(item.id)}
             style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}
@@ -235,6 +237,20 @@ const Furnitur: React.FC = () => {
             <h3>{item.namaUsaha}</h3>
             <p>Lokasi: {item.lokasiUsaha}</p>
             <p>Kategori: {item.kategori}</p>
+          </div>
+        ))}
+      </div> */}
+      <div className="cards-container">
+        {data.map((card, index) => (
+          <div className="card" onClick={()=>handleCardClick(card.id)}>
+            <svg className="bd-placeholder-img card-img-top" width="100%" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <image href={card.imageUrl} className="card-image" width="100%" 
+        height="100%" />
+            </svg>
+            <div className="card-body">
+              <h3 className="card-title">{card.namaUsaha}</h3>
+              <p className="card-text">{card.kategori}</p>
+            </div>
           </div>
         ))}
       </div>
