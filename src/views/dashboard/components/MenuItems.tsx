@@ -193,8 +193,8 @@ export const menuItems = [
         url: '/profile'
     },
     {
-        title: 'Form Pendaftaran Usaha',
-        url: '/submit-form'
+        title: 'Tambahkan Usaha',
+        url: '/tambahkan-usaha'
     }
 ];
 
@@ -239,8 +239,8 @@ export const menuAdmin = [
         url: '/profile'
     },
     {
-        title: 'Form Pendaftaran Usaha',
-        url: '/submit-form'
+        title: 'Tambahkan Usaha',
+        url: '/tambahkan-usaha'
     },
     {
         title: 'Halaman Admin',

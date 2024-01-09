@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../firebase/firebaseSetup';
 import { AuthContext } from '../../../context/UserAuthContext';
-import { useContext } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import './Navbar.css'
 import '../../../../node_modules/bootstrap/dist/js/bootstrap.bundle';
 import {
@@ -22,11 +22,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 //navbar & dropdown menu
 const NavbarMenu = () => {
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext)
   console.log("currentUser: ", currentUser?.email);
   const email = currentUser?.email;
   console.log("email", email);
+  console.log("search", search);
+  const searchString = search;
  
   const handleLogout = () => {               
       signOut(auth).then(() => {
@@ -39,7 +42,25 @@ const NavbarMenu = () => {
       });
   }
 
-  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+    console.log("searchString", searchString)
+    // if(search){
+    //   handleCardClick(searchString);
+    // }
+    // if(search){
+    //   navigate(`/search/${search}`);
+    // }
+  };
+  const handleClick = async (e: FormEvent) => {
+    console.log("search handle", search)
+    // navigate('/profile');
+    // const encodedSearchTerm = encodeURIComponent(search);
+    if(search){
+      navigate(`/search/${searchString}`);
+    }
+  };
 
   return (
     <>
@@ -158,6 +179,17 @@ const NavbarMenu = () => {
               </NavDropdown.Item>
             </NavDropdown> */}
           </Nav>
+          <form role="search" onSubmit={handleClick}>
+            <input 
+              className="form-control" 
+              type="search" 
+              placeholder="Search" 
+              aria-label="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              // onChange={handleChange}
+            />
+          </form>
         </Navbar.Collapse>
       </Navbar>
     {/* <Nav className="navbar navbar-dark bg-dark" aria-label="First navbar example">

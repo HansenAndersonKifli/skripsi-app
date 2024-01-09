@@ -21,6 +21,7 @@ import AdminPage from '../admin_page/AdminPage';
 import Otomotif from '../otomotif/Otomotif';
 import Elektronik from '../elektronik/Elektronik';
 import LainLain from '../lain_lain/LainLain';
+import SearchedPage from '../../components/searched_page/SearchedPage';
 // import { AuthContext } from '../../context/AuthContext';
 // import RequireAuth from '../../components/require-auth';
 
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/admin-page" element={currentUser?.email == "admin@gmail.com" ? <AdminPage />: <Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/card-detail/:id" element={<CardDetail />} />
+          <Route path="/search/:search" element={<SearchedPage />} />
           <Route path="/card-detail" element={<CardDetail2 />} />
           <Route path="/makanan-dan-minuman" element={<MakananDanMinuman />} />
           <Route path="/furnitur" element={<Furnitur />} />
@@ -65,7 +67,7 @@ const App = () => {
               <Profile />
             </RequireAuth>}
           />
-          <Route path="/submit-form" element={
+          <Route path="/tambahkan-usaha" element={
             <RequireAuth>
               <SubmitForm />
             </RequireAuth>}

@@ -47,6 +47,19 @@ const Login = () => {
     const onLogin = (e: any) => {
         // setLogin(false);
         e.preventDefault();
+
+        // Validasi email
+        if (!email.endsWith('@gmail.com')) {
+            alert('Email harus diakhiri dengan "@gmail.com"');
+            return;
+        }
+
+        // Validasi password
+        if (password.length < 6 || !/\d/.test(password)) {
+            alert('Password harus memiliki setidaknya 6 karakter dan mengandung angka');
+            return;
+        }
+
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in
@@ -59,6 +72,7 @@ const Login = () => {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            alert('Akun tidak terdaftar. Silahkan lakukan Sign Up terlebih dahulu.');
             console.log(errorCode, errorMessage)
         });
     }
@@ -224,7 +238,7 @@ const Login = () => {
                 <button className="btn btn-primary w-100 py-2" type="submit" onClick={onLogin}>Sign in</button>
             </form>
             <p className="text-sm text-black text-center">
-                No account yet? {' '}
+                Belum Punya Akun? {' '}
                 <NavLink to="/sign-up">Sign up</NavLink>
             </p>
         </main>

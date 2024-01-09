@@ -11,6 +11,8 @@ import Login from '../SignIn/SignIn';
 import { AuthContext } from '../../context/UserAuthContext';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import Pagination from '../../components/pagination/Pagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIcons, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 
 //   const cardsData = [
 //     {
@@ -166,7 +168,7 @@ function HomePage() {
 
   return (
     <>
-    <h2>test</h2>
+    <h2>Home</h2>
 
     {/* <Row className="w-100 m-0 pl-3 pr-3 pb-3">
       <Col md={4} lg={4} sm={12} xs={12} className="m-0 p-0 pt-3 pr-1 pl-3">
@@ -214,23 +216,37 @@ function HomePage() {
       {data.map((card, index) => (
         <div className="card" onClick={()=>handleCardClick(card.id)}>
           <svg className="bd-placeholder-img card-img-top" width="100%" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <image href={card.imageUrl} className="card-image" width="100%" 
-      height="100%" />
+            {card.imageUrl ? 
+              (<image href={card.imageUrl} className="card-image" width="100%" height="100%" />) 
+              : (<image href="/local-store-5762254_1280.png" className="card-image" width="100%" height="100%" />)
+            }
+            {/* <image href={card.imageUrl} className="card-image" width="100%" height="100%" /> */}
           </svg>
           <div className="card-body">
             <h3 className="card-title">{card.namaUsaha}</h3>
-            <p className="card-text">{card.kategori}</p>
+            <div className='mb-2'>
+              <span>
+                <FontAwesomeIcon icon={faMapMarker} className='mr-2'/> {card.lokasiUsaha}
+              </span>
+                {/* <p className="card-text">{card.lokasiUsaha}</p> */}
+            </div>
+            <div>
+              <span>
+                <FontAwesomeIcon icon={faIcons} className='mr-2'/> {card.kategori}
+              </span>
+            </div>
+            {/* <p className="card-text">{card.kategori}</p> */}
           </div>
         </div>
       ))}
     </div>
-    <Pagination
+    {/* <Pagination
         className="pagination-bar"
         currentPage={currentPage}
         totalCount={data.length}
         pageSize={PageSize}
         onPageChange={(page:any) => setCurrentPage(page)} 
-        siblingCount={1}      />
+        siblingCount={1}      /> */}
     </>
   );
 }

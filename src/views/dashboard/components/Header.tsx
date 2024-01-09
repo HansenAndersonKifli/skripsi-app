@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 // import logo from './logo.svg';
 import '../App.css';
-import PageWrapper from '../../../components/page_wrapper';
-import PageHeaderWrapper from '../../../components/page_header_wrapper';
-import { Helmet } from 'react-helmet';
 import NavbarMenu from '../components/Navbar';
 
 
 // import "../../dashboard/App.css";
-import { Route, Routes } from 'react-router-dom';
 class Layout extends Component<any, any> {
   //  constructor declaration
 

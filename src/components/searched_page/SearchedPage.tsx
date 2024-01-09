@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { db } from '../../firebase/firebaseSetup';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import { withRouter } from '../../components/WithRouter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIcons, faMapMarker } from '@fortawesome/free-solid-svg-icons';
@@ -14,26 +14,29 @@ interface IData {
   imageUrl: string;
 }
 
-const LainLain: React.FC = () => {
+const SearchPage: React.FC = () => {
   const [data, setData] = useState<IData[]>([]);
   const navigate = useNavigate();
+  const { search } = useParams();
+  const searchString = String(search);
+  console.log("searchString", searchString);
 
   useEffect(() => {
     const fetchData = async () => {
-      // Gantilah 'collectionName' dengan nama koleksi di Firestore Anda
-      const collectionName = 'usaha';
-      
-      const q = query(collection(db, "dataUsaha"), where("kategori", "==", "Lain-Lain"), where("showToggle", "==", "Iya"));
+        const q = query(collection(db, "dataUsaha"), where("namaUsaha", "==", searchString)
+          , where("showToggle", "==", "Iya")
+        );
 
-      const querySnapshot = await getDocs(q);
-      // const querySnapshot = await getDocs(collection(db, collectionName));
+        const querySnapshot = await getDocs(q);
+        // const querySnapshot = await getDocs(collection(db, collectionName));
+        console.log("querySnapshot", querySnapshot);
+        const newData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        })) as IData[];
 
-      const newData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as IData[];
-
-      setData(newData);
+        setData(newData);
+        console.log("data", data);
     };
 
     fetchData();
@@ -45,7 +48,7 @@ const LainLain: React.FC = () => {
 
   return (
     <div>
-      <h2>Lain-Lain</h2>
+      <h2>{searchString}</h2>
       <div className="cards-container">
         {data.map((card, index) => (
           <div className="card" onClick={()=>handleCardClick(card.id)}>
@@ -61,15 +64,15 @@ const LainLain: React.FC = () => {
               {/* <p className="card-text">{card.kategori}</p> */}
               <div className='mb-2'>
                 <span>
-                  <FontAwesomeIcon icon={faMapMarker} className='mr-2'/> {card.lokasiUsaha}
+                    <FontAwesomeIcon icon={faMapMarker} className='mr-2'/> {card.lokasiUsaha}
                 </span>
-                  {/* <p className="card-text">{card.lokasiUsaha}</p> */}
-              </div>
-              <div>
+                    {/* <p className="card-text">{card.lokasiUsaha}</p> */}
+                </div>
+                <div>
                 <span>
-                  <FontAwesomeIcon icon={faIcons} className='mr-2'/> {card.kategori}
+                    <FontAwesomeIcon icon={faIcons} className='mr-2'/> {card.kategori}
                 </span>
-              </div>
+                </div>
             </div>
           </div>
         ))}
@@ -78,4 +81,4 @@ const LainLain: React.FC = () => {
   );
 };
 
-export default withRouter(LainLain);
+export default withRouter(SearchPage);

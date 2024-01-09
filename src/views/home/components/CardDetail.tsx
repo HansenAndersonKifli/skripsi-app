@@ -671,6 +671,17 @@ const CardDetail: React.FC = () => {
               </div>
             </Col>
           </Row>
+
+          {/* <Row className="m-0" >
+            <Col md={3} lg={3} sm={6} xs={6} className="m-0 p-0 pt-3">
+              <p>Website</p>
+            </Col>
+            <Col md={8} lg={8} sm={12} xs={12} className="m-0 p-0 pt-3">
+              <div>
+                : www apalah gtu
+              </div>
+            </Col>
+          </Row> */}
         </div>
         <div className="right-column">
           {

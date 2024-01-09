@@ -11,22 +11,51 @@ const Signup = () => {
     const [password, setPassword] = useState('');
  
     const onSubmit = async (e: any) => {
-      e.preventDefault()
+        e.preventDefault()
+
+        // Validasi email
+        if (!email.endsWith('@gmail.com')) {
+            alert('Email harus diakhiri dengan "@gmail.com"');
+            return;
+        }
+
+        // Validasi password
+        /* 
+            \d adalah karakter kelas karakter dalam ekspresi reguler yang cocok dengan digit apa pun (0-9).
+
+            /.../ adalah literal reguler. Dalam hal ini, itu digunakan untuk membungkus ekspresi reguler.
+
+            .test(password) adalah metode pada objek ekspresi reguler yang menguji apakah ekspresi reguler cocok dengan string yang diberikan (password dalam hal ini).
+            
+            ! adalah operator negasi. Itu membalik nilai kebenaran. Jadi, !/\d/.test(password) akan benar jika /\d/.test(password) adalah salah, yang berarti password tidak mengandung setidaknya satu digit.
+        */
+        if (password.length < 6 || !/\d/.test(password)) {
+            alert('Password harus memiliki setidaknya 6 karakter dan mengandung angka');
+            return;
+        }
      
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-            navigate("/login")
-            // ...
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-            // ..
-        });
+        try{
+            const credential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = credential.user;
+            console.log("sukses");
+            navigate("/")
+        }catch(error){
+            // const errorCode = error.code;
+            // const errorMessage = error.message;
+            // console.log(errorCode, errorMessage);
+        }
+        // await createUserWithEmailAndPassword(auth, email, password)
+        //     .then((userCredential) => {
+        //         // Signed in
+        //         const user = userCredential.user;
+        //         console.log(user);
+        //         navigate("/login")
+        //     })
+        //     .catch((error) => {
+        //         const errorCode = error.code;
+        //         const errorMessage = error.message;
+        //         console.log(errorCode, errorMessage);
+        // });
  
    
     }
@@ -125,7 +154,7 @@ const Signup = () => {
             </button>
         </form>
         <p className="text-sm text-black text-center">
-            Already have an account?{' '}
+            Sudah Punya Akun?{' '}
             <NavLink to="/sign-in" >Sign in</NavLink>
         </p>  
     </main>
