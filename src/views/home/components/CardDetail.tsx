@@ -1,8 +1,6 @@
 // import React, { Component } from 'react';
 // import { Helmet } from 'react-helmet';
 // import { Col, Row, Table } from 'reactstrap';
-// import PageRegion from '../../../components/page_region';
-// import BackNavigation from '../../../components/back_navigation';
 // import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 // import ImageGallery from "react-image-gallery";
 // import "react-image-gallery/styles/css/image-gallery.css";
@@ -278,9 +276,6 @@
 //         <>
 //          {/* <h2>detail</h2> */}
 
-//          {/* <PageRegion className="pt-2 pb-2 width-100-px"> */}
-//             {/* <BackNavigation label="&nbsp;" onClick={this.goBack} /> */}
-//           {/* </PageRegion> */}
 //           {this.renderDetailHead()}
           
 //           <div>
@@ -308,7 +303,7 @@
 // export default withRouter(CardDetail);
 
 
-import { DocumentData, addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { DocumentData, addDoc, collection, deleteDoc, doc, documentId, getDoc, getDocs, query, where } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { auth, db } from "../../../firebase/firebaseSetup";
@@ -322,7 +317,7 @@ import './CardDetail.css'
 import GalleryComponent from "../../../components/GalleryComponent";
 import { onAuthStateChanged } from "firebase/auth";
 import { AuthContext } from "../../../context/UserAuthContext";
-
+import { v4 as uuid } from "uuid";
 
 interface IData {
   id: string;
@@ -344,6 +339,15 @@ interface Comment {
   comment: string;
   timestamp: number;
   user: string;
+  commentId: string;
+}
+interface temp {
+  userId: string;
+  comment: string;
+  timestamp: number;
+  user: string;
+  commentId: string;
+  id: string;
 }
 
 const CardDetail: React.FC = () => { 
@@ -365,6 +369,9 @@ const CardDetail: React.FC = () => {
   const [lo, setLo] = useState<number>(0);
 
   const {currentUser} = useContext(AuthContext);
+  const currentUid = String(currentUser?.uid);
+
+  const [temp, setTemp] = useState<temp[]>([]);
   const initialState = {
     isLoading: true
   }
@@ -456,7 +463,7 @@ const CardDetail: React.FC = () => {
       // setData(newData);
     };
     fetchComments();
-    fetchRatings();
+    // fetchRatings();
     fetchData().then(()=>{fetchGalleryData()});
   }, [id]);
 
@@ -512,17 +519,10 @@ const CardDetail: React.FC = () => {
     const commentsData = commentsSnapshot.docs.map((doc) => doc.data() as Comment);
     setComments(commentsData);
   };
-  
-  const fetchRatings = async () => {
-    const ratingsRef = collection(db, 'ratings');
-    const ratingsQuery = query(ratingsRef, where('idUsaha', '==', idString));
-    const ratingsSnapshot = await getDocs(ratingsQuery);
-    const ratingsData = ratingsSnapshot.docs.map((doc) => doc.data() as Rating);
-    setRatings(ratingsData);
-  };
 
   const submitComment = async () => {
     const userId = uid;
+    const cId = uuid();
     const commentsRef = collection(db, 'comments');
     await addDoc(commentsRef, {
       idUsaha: id,
@@ -530,21 +530,34 @@ const CardDetail: React.FC = () => {
       comment,
       timestamp: Date.now(),
       user: currentUser?.email,
+      commentId: cId,
     });
     fetchComments();
+    setComment('')
   };
-  
-  const submitRating = async () => {
-    const userId = 'currentUserId';
-    const ratingsRef = collection(db, 'ratings');
-    await addDoc(ratingsRef, {
-      companyId: id,
-      userId,
-      rating,
-      timestamp: Date.now(),
-    });
-    fetchRatings();
-  };
+
+  const deleteComment = async (id: string) => {
+    const docId = id;
+    
+    const commentsRef = collection(db, 'comments');
+    const commentsQuery = query(commentsRef, where('commentId', '==', docId));
+    const commentsSnapshot = await getDocs(commentsQuery);
+    // const commentsData = commentsSnapshot.docs.map((doc) => doc.data() as temp);
+    const commentsData = commentsSnapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+
+    // setTemp(commentsData);
+    console.log("commentsData", commentsData[0].id)
+    // const getdocRef = doc(db, 'comments');
+    // const docSnap = await getDoc(getdocRef);
+    // const commentsRef = collection(db, 'comments', docId);
+    // const commentRef = doc(db, 'comments', docId);
+
+    // const docRef = doc(db, 'comments', getdocRef.id);
+    await deleteDoc(doc(db, "comments", commentsData[0].id));
+    fetchComments()
+    // await deleteDoc(commentRef);
+    // console.log("docref comment: ", commentRef)
+  }
   
   const fetchGalleryData = () => {
     if(data?.galleryImageUrls){
@@ -563,16 +576,6 @@ const CardDetail: React.FC = () => {
         items utk img diganti dari API
     */
     return (
-      // <div className="my-gallery"> {/* Gunakan kelas CSS di sini */}
-      //   <ImageGallery
-      //     items={imgGallery}
-      //     showFullscreenButton={true}
-      //     showIndex={true}
-      //     onPlay={() => {
-      //       alert('Slideshow is now playing!');
-      //     }}
-      //   />
-      // </div>
       <ImageGallery
         items={data?.galleryImageUrls}
         // showPlayButton={true}
@@ -602,7 +605,10 @@ const CardDetail: React.FC = () => {
           </div>
         ))} */}
           <div className="card-title">
-            <img src={data?.imageUrl} alt={data?.namaUsaha} className="card-image" />
+            {/* <img src={data?.imageUrl} alt={data?.namaUsaha} className="card-image" /> */}
+            {data?.imageUrl ? (<img src={data?.imageUrl} alt={data?.namaUsaha} className="card-image" />) 
+            : 
+            (<img src="/local-store-5762254_1280.png" alt={data?.namaUsaha} className="card-image" />)}
             <div className="card-content">
                 <h1>{data?.namaUsaha}</h1>
                 <h3 className='mt-3 pt-3'>Kategori : {data?.kategori}</h3>
@@ -889,11 +895,21 @@ const CardDetail: React.FC = () => {
         <div className="flex flex-col pt-12">
           <ul>
             {comments.map((comment) => (
+              <>
+              {/* console.log("commentUserId") */}
                 <div className="border rounded-md p-4">
                   <p>{comment.user}</p>
                   <p>{comment.comment}</p>
+                  <p>{comment.commentId}</p>
                   {/* <li key={comment.timestamp}>{comment.comment}</li> */}
+                  {comment.userId === currentUid ?
+                  (<button onClick={()=>deleteComment(comment.commentId)}>Hapus Komen</button>)
+                  :
+                  null
+                }
+                  {/* <button>Hapus Komen</button> */}
                 </div>
+              </>
               ))}
           </ul>
         </div>

@@ -1,6 +1,4 @@
 // import React, { Component } from 'react';
-// import PageWrapper from '../../components/page_wrapper';
-// import PageHeaderWrapper from '../../components/page_header_wrapper';
 // import { Helmet } from 'react-helmet';
 // import "./MakananDanMinuman.css";
 // import { collection, getDocs, query, where } from 'firebase/firestore';

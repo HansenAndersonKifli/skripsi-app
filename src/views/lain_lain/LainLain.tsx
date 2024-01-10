@@ -23,7 +23,7 @@ const LainLain: React.FC = () => {
       // Gantilah 'collectionName' dengan nama koleksi di Firestore Anda
       const collectionName = 'usaha';
       
-      const q = query(collection(db, "dataUsaha"), where("kategori", "==", "Lain-Lain"), where("showToggle", "==", "Iya"));
+      const q = query(collection(db, "dataUsaha"), where("kategori", "==", "Lain-lain"), where("showToggle", "==", "Iya"));
 
       const querySnapshot = await getDocs(q);
       // const querySnapshot = await getDocs(collection(db, collectionName));
@@ -34,6 +34,7 @@ const LainLain: React.FC = () => {
       })) as IData[];
 
       setData(newData);
+      console.log("data: ", data)
     };
 
     fetchData();

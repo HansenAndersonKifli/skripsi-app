@@ -7,7 +7,9 @@ const Layout = () => {
     <div>
       <Header />
         <div className="content">
+            {/* buat render route */}
             <Outlet />
+            
         </div>
     </div>
   );

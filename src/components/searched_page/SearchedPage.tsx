@@ -19,7 +19,7 @@ const SearchPage: React.FC = () => {
   const navigate = useNavigate();
   const { search } = useParams();
   const searchString = String(search);
-  console.log("searchString", searchString);
+  // console.log("searchString", searchString);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,14 +29,14 @@ const SearchPage: React.FC = () => {
 
         const querySnapshot = await getDocs(q);
         // const querySnapshot = await getDocs(collection(db, collectionName));
-        console.log("querySnapshot", querySnapshot);
+        // console.log("querySnapshot", querySnapshot);
         const newData = querySnapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
         })) as IData[];
 
         setData(newData);
-        console.log("data", data);
+        // console.log("data", data);
     };
 
     fetchData();

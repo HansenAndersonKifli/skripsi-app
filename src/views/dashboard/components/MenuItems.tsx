@@ -29,8 +29,8 @@ import { useContext, useEffect, useState } from "react";
 //             ]
 //         },
 //         {
-//             title: 'About',
-//             url: '/about'
+//             title: 'Tentang Kami',
+//             url: '/tentang-kami'
 //         },
 //         {
 //             title: 'Profile',
@@ -138,8 +138,8 @@ import { useContext, useEffect, useState } from "react";
 //                 ]
 //             },
 //             {
-//                 title: 'About',
-//                 url: '/about'
+//                 title: 'Tentang Kami',
+//                 url: '/tentang-kami'
 //             },
 //             {
 //                 title: 'Profile',
@@ -185,8 +185,8 @@ export const menuItems = [
         ]
     },
     {
-        title: 'About',
-        url: '/about'
+        title: 'Tentang Kami',
+        url: '/tentang-kami'
     },
     {
         title: 'Profile',
@@ -231,8 +231,8 @@ export const menuAdmin = [
         ]
     },
     {
-        title: 'About',
-        url: '/about'
+        title: 'Tentang Kami',
+        url: '/tentang-kami'
     },
     {
         title: 'Profile',
@@ -281,8 +281,8 @@ export const menuItems2 = [
         ]
     },
     {
-        title: 'About',
-        url: '/about'
+        title: 'Tentang Kami',
+        url: '/tentang-kami'
     },
     // {
     //     title: 'Sign Up',

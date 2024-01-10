@@ -71,7 +71,7 @@ const NavbarMenu = () => {
         // bg={GetMode()}
         // variant={GetMode()}
       >
-        <Navbar.Brand href="#home">Nama</Navbar.Brand>
+        <Navbar.Brand href="/">Toko Lokal</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

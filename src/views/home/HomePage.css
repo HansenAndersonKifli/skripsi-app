@@ -22,7 +22,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 card per baris */
     gap: 20px; /* jarak antara card */
-    width: 1450px;
+    width: 100%;
 }
 
 /* card */

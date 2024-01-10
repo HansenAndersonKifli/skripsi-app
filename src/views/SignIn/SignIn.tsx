@@ -72,7 +72,8 @@ const Login = () => {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert('Akun tidak terdaftar. Silahkan lakukan Sign Up terlebih dahulu.');
+            alert('Akun tidak terdaftar. Silakan sign up terlebih dahulu.');
+            
             console.log(errorCode, errorMessage)
         });
     }

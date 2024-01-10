@@ -1,6 +1,4 @@
 // import React, { Component, useContext, useEffect } from 'react';
-// import PageWrapper from '../../components/page_wrapper';
-// import PageHeaderWrapper from '../../components/page_header_wrapper';
 // import { Helmet } from 'react-helmet';
 // import "../makanan_dan_minuman/MakananDanMinuman.css";
 // import { collection, getDocs, query, where } from 'firebase/firestore';
@@ -175,6 +173,8 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../firebase/firebaseSetup';
 import { Navigate, useNavigate } from 'react-router';
 import { withRouter } from '../../components/WithRouter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIcons, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 
 interface IData {
   id: string;
@@ -249,7 +249,18 @@ const Furnitur: React.FC = () => {
             </svg>
             <div className="card-body">
               <h3 className="card-title">{card.namaUsaha}</h3>
-              <p className="card-text">{card.kategori}</p>
+              <div className='mb-2'>
+                <span>
+                  <FontAwesomeIcon icon={faMapMarker} className='mr-2'/> {card.lokasiUsaha}
+                </span>
+                  {/* <p className="card-text">{card.lokasiUsaha}</p> */}
+              </div>
+              <div>
+                <span>
+                  <FontAwesomeIcon icon={faIcons} className='mr-2'/> {card.kategori}
+                </span>
+              </div>
+              {/* <p className="card-text">{card.kategori}</p> */}
             </div>
           </div>
         ))}

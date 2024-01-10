@@ -14,7 +14,7 @@ const SubmitForm = () => {
     const [image, setImage] = useState<File | null>(null);
     const [gambarUsaha, setGambarUsaha] = useState<FileList | null>(null);
     const [galleryImages, setGalleryImages] = useState<File[]>([]);
-    const showToggle = "Tidak";
+    const showToggle = "Iya";
     const navigate = useNavigate();
     
 

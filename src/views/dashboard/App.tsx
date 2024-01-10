@@ -2,7 +2,6 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from '../routes/home';
 import MakananDanMinuman from '../makanan_dan_minuman/MakananDanMinuman';
-import About from '../routes/About';
 import HomePage from '../home/HomePage';
 import CardDetail from '../home/components/CardDetail';
 // import LoginAndRegister from '../login_dan_register/LoginDanRegister';
@@ -22,6 +21,7 @@ import Otomotif from '../otomotif/Otomotif';
 import Elektronik from '../elektronik/Elektronik';
 import LainLain from '../lain_lain/LainLain';
 import SearchedPage from '../../components/searched_page/SearchedPage';
+import About from '../about/About';
 // import { AuthContext } from '../../context/AuthContext';
 // import RequireAuth from '../../components/require-auth';
 
@@ -48,7 +48,7 @@ const App = () => {
           <Route index element={<HomePage />} />
           {/* <Route path="home" element={<HomePage />} /> */}
           <Route path="/admin-page" element={currentUser?.email == "admin@gmail.com" ? <AdminPage />: <Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/tentang-kami" element={<About />} />
           <Route path="/card-detail/:id" element={<CardDetail />} />
           <Route path="/search/:search" element={<SearchedPage />} />
           <Route path="/card-detail" element={<CardDetail2 />} />
@@ -96,8 +96,6 @@ export default App;
 // import React, { Component } from 'react';
 // // import logo from './logo.svg';
 // import './App.css';
-// import PageWrapper from '../../components/page_wrapper';
-// import PageHeaderWrapper from '../../components/page_header_wrapper';
 // import { Helmet } from 'react-helmet';
 // import NavbarMenu from './components/Navbar';
 
