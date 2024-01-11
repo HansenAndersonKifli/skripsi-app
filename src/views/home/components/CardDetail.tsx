@@ -14,7 +14,6 @@
 
 
 // const cardData = [
-//   //ganti pake icon
 //     {
 //       imgUrl: 'logo192.png',
 //       title: 'Toko Mebel Sanjaya',
@@ -318,7 +317,18 @@ import GalleryComponent from "../../../components/GalleryComponent";
 import { onAuthStateChanged } from "firebase/auth";
 import { AuthContext } from "../../../context/UserAuthContext";
 import { v4 as uuid } from "uuid";
+import L, { icon } from "leaflet";
+import 'leaflet/dist/leaflet.css';
 
+const myIcon = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
+});
 interface IData {
   id: string;
   namaUsaha: string;
@@ -376,6 +386,8 @@ const CardDetail: React.FC = () => {
     isLoading: true
   }
   const userEmail = currentUser?.email;
+
+  const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
@@ -622,7 +634,7 @@ const CardDetail: React.FC = () => {
             // center={[-6.929229662187814, 108.87359457507492]}
             // center={[la, lo]}
             center={position || [0, 0]}
-            zoom={13}
+            zoom={15}
             style={{ 
               height: '400px', 
               width: '100%', 
@@ -636,7 +648,7 @@ const CardDetail: React.FC = () => {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             {/* <Marker position={[-6.929229662187814, 108.87359457507492]}> */}
-            <Marker position={[la, lo]}>
+            <Marker position={[la, lo]} icon={myIcon}>
               <Popup>
                 A pretty CSS3 popup. <br /> Easily customizable.
               </Popup>

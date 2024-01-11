@@ -59,11 +59,49 @@ const SubmitForm = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (!namaUsaha) {
+            alert('Tolong Masukkan Nama Usaha');
+            return;
+        }
+        if (!kategori) {
+            alert('Tolong Pilih Kategori');
+            return;
+        }
+
+        if (!deskripsiUsaha) {
+            alert('Tolong Masukkan Deskripsi Usaha');
+            return;
+        }
+        if (!lokasiUsaha) {
+            alert('Tolong Masukkan Lokasi Usaha');
+            return;
+        }
+        if (!lokasiUsaha.startsWith('Jalan')) {
+            alert('Tolong Awali Lokasi Usaha Dengan "Jalan"');
+            return;
+        }
+
+        if (!noTelp) {
+            alert('Tolong Masukkan Nomor Telepon');
+            return;
+        }
+
+
+        if (!lokasiUsaha) {
+            alert('Tolong Masukkan Lokasi Usaha');
+            return;
+        }
     
         if (!image || !galleryImages.length) {
-          console.error('Please select image(s).');
+          alert('Tolong Masukkan Gambar');
           return;
         }
+
+        // if (!galleryImageUrls || !galleryImages.length) {
+        //   alert('Tolong Masukkan Gambar');
+        //   return;
+        // }
     
         try {
           // Upload main image
@@ -183,7 +221,7 @@ const SubmitForm = () => {
                 </div>
 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingInput">Lokasi Usaha</label>
+                    <label htmlFor="floatingInput">Lokasi Usaha {'('} Awali Dengan "Jalan" {')'}</label>
                     <input
                         id="floatingInput"
                         name="lokasiUsaha"
