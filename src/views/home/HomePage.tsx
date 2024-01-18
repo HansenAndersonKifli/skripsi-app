@@ -1,14 +1,10 @@
-import React, { Component, useContext, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { useContext, useEffect, useState } from 'react';
 import "./HomePage.css";
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Col, Row } from 'reactstrap';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { useNavigate, useParams } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebaseSetup';
-import Login from '../SignIn/SignIn';
 import { AuthContext } from '../../context/UserAuthContext';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import Pagination from '../../components/pagination/Pagination';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIcons, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 

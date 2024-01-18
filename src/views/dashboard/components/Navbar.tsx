@@ -23,6 +23,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //navbar & dropdown menu
 const NavbarMenu = () => {
   const [search, setSearch] = useState('');
+  const [searchLowercase, setSearchLowercase] = useState('');
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext)
   console.log("currentUser: ", currentUser?.email);
@@ -44,7 +45,7 @@ const NavbarMenu = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSearch(e.target.value);
+    setSearch(e.target.value.toLowerCase());
     console.log("searchString", searchString)
     // if(search){
     //   handleCardClick(searchString);
@@ -58,7 +59,7 @@ const NavbarMenu = () => {
     // navigate('/profile');
     // const encodedSearchTerm = encodeURIComponent(search);
     if(search){
-      navigate(`/search/${searchString}`);
+      navigate(`/search/${searchString.toLowerCase()}`);
     }
   };
 
@@ -68,8 +69,6 @@ const NavbarMenu = () => {
         className="navbar navbar-dark bg-dark"
         collapseOnSelect
         expand="full"
-        // bg={GetMode()}
-        // variant={GetMode()}
       >
         <Navbar.Brand href="/">Toko Lokal</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

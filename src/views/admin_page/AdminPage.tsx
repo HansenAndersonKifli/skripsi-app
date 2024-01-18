@@ -220,7 +220,7 @@ const AdminPage = () => {
 
     return (
         <>
-            <p>a</p>
+            <p>Tabel Usaha</p>
             <Table bordered striped hover className="C--table type--2 mb-4">
               {tableColumn()}
               {tableBody()}

@@ -185,7 +185,7 @@ export const menuItems = [
         ]
     },
     {
-        title: 'Tentang Kami',
+        title: 'Tentang Kami dan Panduan',
         url: '/tentang-kami'
     },
     {
@@ -231,7 +231,7 @@ export const menuAdmin = [
         ]
     },
     {
-        title: 'Tentang Kami',
+        title: 'Tentang Kami dan Panduan',
         url: '/tentang-kami'
     },
     {
@@ -281,7 +281,7 @@ export const menuItems2 = [
         ]
     },
     {
-        title: 'Tentang Kami',
+        title: 'Tentang Kami dan Panduan',
         url: '/tentang-kami'
     },
     // {

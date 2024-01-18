@@ -302,7 +302,7 @@
 // export default withRouter(CardDetail);
 
 
-import { DocumentData, addDoc, collection, deleteDoc, doc, documentId, getDoc, getDocs, query, where } from "firebase/firestore";
+import { DocumentData, addDoc, collection, deleteDoc, doc, documentId, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { auth, db } from "../../../firebase/firebaseSetup";
@@ -557,6 +557,11 @@ const CardDetail: React.FC = () => {
     // const commentsData = commentsSnapshot.docs.map((doc) => doc.data() as temp);
     const commentsData = commentsSnapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
 
+    const isConfirmed = window.confirm('Anda yakin ingin menghapus komentar?')
+
+    if(isConfirmed){
+      await deleteDoc(doc(db, "comments", commentsData[0].id));
+    }
     // setTemp(commentsData);
     console.log("commentsData", commentsData[0].id)
     // const getdocRef = doc(db, 'comments');
@@ -565,10 +570,42 @@ const CardDetail: React.FC = () => {
     // const commentRef = doc(db, 'comments', docId);
 
     // const docRef = doc(db, 'comments', getdocRef.id);
-    await deleteDoc(doc(db, "comments", commentsData[0].id));
     fetchComments()
     // await deleteDoc(commentRef);
     // console.log("docref comment: ", commentRef)
+  }
+
+  const [editedComment, setEditedComment] = useState('');
+  const [toggleEdit, setToggleEdit] = useState(false);
+  const [editedCommentId, setEditedCommentId] = useState('')
+
+  const handleEdit = (id: string) => {
+    setEditedCommentId(id);
+    setToggleEdit(true);
+  }
+
+  const editComment = async () => {
+    const isConfirmed = window.confirm('Anda yakin mau mengubah komentar?')
+    const commentsRef = collection(db, 'comments');
+    const commentsQuery = query(commentsRef, where('commentId', '==', editedCommentId));
+    const commentsSnapshot = await getDocs(commentsQuery);
+    
+    const commentsData = commentsSnapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
+    const commentsDataRef = doc(db, "comments", commentsData[0].id);
+    if(isConfirmed){
+      try{
+        const docRef = await updateDoc(commentsDataRef, {
+          comment: editedComment,
+        })
+        console.log("docRef: ", docRef);
+        fetchComments();
+        setToggleEdit(false);
+        alert("Komentar berhasil diubah!");
+      }catch (error) {
+        console.error('Error writing document: ', error);
+      }
+
+    }
   }
   
   const fetchGalleryData = () => {
@@ -606,7 +643,8 @@ const CardDetail: React.FC = () => {
   return(
     <>
       {/* <p>{data?.namaUsaha}</p> */}
-
+      <div className="detail-container">
+        
       <div className="cards-container1" >
         {/* {data.map((item, index) => (
           <div className="card-title">
@@ -616,14 +654,14 @@ const CardDetail: React.FC = () => {
           </div>
           </div>
         ))} */}
-          <div className="card-title">
+          <div className="card-titleD">
             {/* <img src={data?.imageUrl} alt={data?.namaUsaha} className="card-image" /> */}
             {data?.imageUrl ? (<img src={data?.imageUrl} alt={data?.namaUsaha} className="card-image" />) 
             : 
             (<img src="/local-store-5762254_1280.png" alt={data?.namaUsaha} className="card-image" />)}
-            <div className="card-content">
-                <h1>{data?.namaUsaha}</h1>
-                <h3 className='mt-3 pt-3'>Kategori : {data?.kategori}</h3>
+            <div className="card-contentD">
+                <h1 className="res-text">{data?.namaUsaha}</h1>
+                <h3 className='mt-3 pt-3 res-text'>Kategori : {data?.kategori}</h3>
             </div>
           </div>
       </div>
@@ -654,7 +692,8 @@ const CardDetail: React.FC = () => {
               </Popup>
             </Marker>
           </MapContainer>
-          <h2>Informasi Detail</h2>
+          <hr />
+          <h2 className="pt-1">Informasi Detail</h2>
           <Row className="m-0" >
             <Col md={3} lg={3} sm={6} xs={6} className="m-0 p-0 pt-3">
               <div>
@@ -680,10 +719,10 @@ const CardDetail: React.FC = () => {
           </Row>
 
           <Row className="m-0" >
-            <Col md={3} lg={3} sm={6} xs={6} className="m-0 p-0 pt-3">
+            <Col md={3} lg={3} sm={6} xs={6} className="m-0 p-0">
               <p>Alamat</p>
             </Col>
-            <Col md={8} lg={8} sm={12} xs={12} className="m-0 p-0 pt-3">
+            <Col md={8} lg={8} sm={12} xs={12} className="m-0 p-0">
               <div>
                 : {data?.lokasiUsaha}
               </div>
@@ -903,27 +942,67 @@ const CardDetail: React.FC = () => {
       } */}
       {/* <GalleryComponent galleryImageUrls={data?.galleryImageUrls} /> */}
       <div >
-        <h2>Comments</h2>
-        <div className="flex flex-col pt-12">
-          <ul>
+        <h2>Komentar</h2>
+        <div className="flex flex-col pt-12 kolom-komentar">
+          {comments ? 
+          (<ul>
             {comments.map((comment) => (
               <>
               {/* console.log("commentUserId") */}
                 <div className="border rounded-md p-4">
                   <p>{comment.user}</p>
                   <p>{comment.comment}</p>
+                  {/* <p>{comment.commentId}</p> */}
+                  {/* <li key={comment.timestamp}>{comment.comment}</li> */} 
+                  {comment.userId === currentUid && toggleEdit === false || currentUser?.email === "admin@gmail.com" ?
+                    (
+                    <>
+                      <button className="btn btn-primary" onClick={()=>deleteComment(comment.commentId)}>Hapus Komentar</button>
+                      <button className="btn btn-primary ml-2" onClick={()=>handleEdit(comment.commentId)}>Edit Komentar</button>
+                    </>
+                    )
+                    : comment.userId === currentUid && toggleEdit === true ?
+                    (
+                      <>
+                      <textarea 
+                      placeholder="Tambahkan komentar..."
+                      value={editedComment} 
+                      onChange={(e) => setEditedComment(e.target.value)} 
+                      />
+                      <button className="btn btn-primary" onClick={editComment}>Ubah Komentar</button>
+                      </>
+                    )
+                    :
+                    null
+                    }
+                  {/* <button>Hapus Komen</button> */}
+                </div>
+              </>
+              ))}
+          </ul>) 
+          
+          : 
+          (
+            <div>
+              <p>Tidak ada komentar</p>
+            </div>
+          )}
+          {/* <ul>
+            {comments.map((comment) => (
+              <>
+                <div className="border rounded-md p-4">
+                  <p>{comment.user}</p>
+                  <p>{comment.comment}</p>
                   <p>{comment.commentId}</p>
-                  {/* <li key={comment.timestamp}>{comment.comment}</li> */}
                   {comment.userId === currentUid ?
                   (<button onClick={()=>deleteComment(comment.commentId)}>Hapus Komen</button>)
                   :
                   null
                 }
-                  {/* <button>Hapus Komen</button> */}
                 </div>
               </>
               ))}
-          </ul>
+          </ul> */}
         </div>
       </div>
       {/* <div>
@@ -934,18 +1013,29 @@ const CardDetail: React.FC = () => {
           ))}
         </ul>
       </div> */}
-      <div className="comment-section">
+      {currentUser ? (<div className="comment-section">
+        <textarea 
+          placeholder="Tambahkan komentar..."
+          value={comment} 
+          onChange={(e) => setComment(e.target.value)} 
+        />
+        <button className="btn btn-primary" onClick={submitComment}>Tambahkan Komentar</button>
+      </div>) 
+      : null}
+      {/* <div className="comment-section">
         <textarea 
           placeholder="Tambahkan komentar..."
           value={comment} 
           onChange={(e) => setComment(e.target.value)} 
         />
         <button onClick={submitComment}>Tambahkan Komentar</button>
-      </div>
+      </div> */}
       {/* <div>
         <input type="number" value={rating} onChange={(e) => setRating(Number(e.target.value))} />
         <button onClick={submitRating}>Add Rating</button>
       </div> */}
+      
+      </div>
     </>
   )
 }

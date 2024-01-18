@@ -19,15 +19,22 @@ const SearchPage: React.FC = () => {
   const navigate = useNavigate();
   const { search } = useParams();
   const searchString = String(search);
-  // console.log("searchString", searchString);
+  console.log("searchString", searchString);
 
   useEffect(() => {
     const fetchData = async () => {
-        const q = query(collection(db, "dataUsaha"), where("namaUsaha", "==", searchString)
-          , where("showToggle", "==", "Iya")
+        const q = query(collection(db, "dataUsaha"), where("namaUsahaLowercase", ">=", searchString), where("namaUsahaLowercase", "<=", searchString + '\uf8ff'), where("showToggle", "==", "Iya")
         );
 
+        
+        // const q = query(collection(db, "dataUsaha"), where("namaUsaha", "==", searchString)
+        //   , where("showToggle", "==", "Iya")
+        // );
+
         const querySnapshot = await getDocs(q);
+        if(!querySnapshot){
+          alert('Usaha yang dicari tidak ada!');
+        }
         // const querySnapshot = await getDocs(collection(db, collectionName));
         // console.log("querySnapshot", querySnapshot);
         const newData = querySnapshot.docs.map((doc) => ({
@@ -48,7 +55,7 @@ const SearchPage: React.FC = () => {
 
   return (
     <div>
-      <h2>{searchString}</h2>
+      <h2>Hasil Pencarian : "{searchString}"</h2>
       <div className="cards-container">
         {data.map((card, index) => (
           <div className="card" onClick={()=>handleCardClick(card.id)}>

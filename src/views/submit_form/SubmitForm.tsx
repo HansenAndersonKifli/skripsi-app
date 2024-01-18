@@ -1,9 +1,10 @@
-import {ChangeEvent, FormEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useContext, useState} from 'react';
 import { db } from '../../firebase/firebaseSetup';
 import "../SignIn/SignIn.css"
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
+import { AuthContext } from '../../context/UserAuthContext';
 
 const SubmitForm = () => {
     const [namaUsaha, setNamaUsaha] = useState<string>('');
@@ -14,9 +15,10 @@ const SubmitForm = () => {
     const [image, setImage] = useState<File | null>(null);
     const [gambarUsaha, setGambarUsaha] = useState<FileList | null>(null);
     const [galleryImages, setGalleryImages] = useState<File[]>([]);
+    const [lowerCase, setLowerCase] = useState('');
     const showToggle = "Iya";
     const navigate = useNavigate();
-    
+    const {currentUser} = useContext(AuthContext);
 
     // const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     //     const file = e.target.files?.[0];
@@ -37,6 +39,7 @@ const SubmitForm = () => {
     
     const handleNamaUsahaChange = (e: ChangeEvent<HTMLInputElement>) => {
         setNamaUsaha(e.target.value);
+        setLowerCase(e.target.value.toLowerCase());
     };
     const handleLokasiUsahaChange = (e: ChangeEvent<HTMLInputElement>) => {
         setLokasiUsaha(e.target.value);
@@ -64,6 +67,7 @@ const SubmitForm = () => {
             alert('Tolong Masukkan Nama Usaha');
             return;
         }
+
         if (!kategori) {
             alert('Tolong Pilih Kategori');
             return;
@@ -102,38 +106,46 @@ const SubmitForm = () => {
         //   alert('Tolong Masukkan Gambar');
         //   return;
         // }
-    
-        try {
-          // Upload main image
-          const imageUrl = await uploadImage(image, `images/${namaUsaha}/${image.name}`);
-    
-          // Upload gallery images
-          const galleryImageUrls = await Promise.all(
+        const isConfirmed = window.confirm('Apakah Anda yakin ingin mengirim form?')
+
+        if(isConfirmed){
+
+            try {
+                // Upload main image
+                const imageUrl = await uploadImage(image, `images/${namaUsaha}/${image.name}`);
+                
+                // Upload gallery images
+                const galleryImageUrls = await Promise.all(
             galleryImages.map(async (galleryImage) => {
-              return uploadImage(
-                galleryImage,
-                `galleryImages/${namaUsaha}/${galleryImage.name}`
-              );
-            })
-          );
+                return uploadImage(
+                    galleryImage,
+                    `galleryImages/${namaUsaha}/${galleryImage.name}`
+                    );
+                })
+                );
     
-          // Save data to Firestore
-          const docRef = await addDoc(collection(db, 'dataUsaha'), {
-            namaUsaha,
-            lokasiUsaha,
-            deskripsiUsaha,
-            noTelp,
-            kategori,
-            imageUrl,
-            galleryImageUrls,
-            showToggle
-          });
-          navigate('/');
-          console.log('Document written with ID: ', docRef.id);
-        } catch (error) {
-          console.error('Error writing document: ', error);
+                // Save data to Firestore
+                const docRef = await addDoc(collection(db, 'dataUsaha'), {
+                    namaUsaha,
+                    namaUsahaLowercase: lowerCase,
+                    usahaUserUID: currentUser?.uid,
+                    lokasiUsaha,
+                    deskripsiUsaha,
+                    noTelp,
+                    kategori,
+                    imageUrl,
+                    galleryImageUrls,
+                    showToggle,
+                    timestamp: new Date()
+                });
+                alert('Form berhasil disubmit!');
+                navigate('/');
+                console.log('Document written with ID: ', docRef.id);
+            } catch (error) {
+                console.error('Error writing document: ', error);
+            }
         }
-    };
+};
 
     // const handleSubmit = async (e: FormEvent) => {
     //     e.preventDefault();
@@ -178,7 +190,7 @@ const SubmitForm = () => {
                 <h1 className="h3 mb-3 fw-normal">Form</h1>
 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingInput">Nama Usaha</label>
+                    <label htmlFor="floatingInput">Nama Usaha *</label>
                     <input
                         id="floatingInput"
                         name="namaUsaha"
@@ -191,8 +203,9 @@ const SubmitForm = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="kategori">Kategori:</label>
+                    <label htmlFor="kategori" className='pr-3'>Kategori * : </label>
                     <select
+                    // className='pl-1 pr-1'
                         id="kategori"
                         name="kategori"
                         value={kategori}
@@ -208,7 +221,7 @@ const SubmitForm = () => {
                 </div>
 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingInput">Deskripsi Usaha</label>
+                    <label htmlFor="floatingInput">Deskripsi Usaha *</label>
                     <input
                         id="floatingInput"
                         name="deskripsiUsaha"
@@ -221,7 +234,9 @@ const SubmitForm = () => {
                 </div>
 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingInput">Lokasi Usaha {'('} Awali Dengan "Jalan" {')'}</label>
+                    <label htmlFor="floatingInput">Lokasi Usaha * </label><br />
+                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Awali Dengan "Jalan"</span> <br />
+                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Contoh: "Jalan Dokter Muwardi" & "Jalan Dokter Makaliwe Gang II, RW 08, Grogol, Grogol Petamburan, West Jakarta, Special Capital Region of Jakarta, Java, 11450, Indonesia"</span> <br />
                     <input
                         id="floatingInput"
                         name="lokasiUsaha"
@@ -234,33 +249,35 @@ const SubmitForm = () => {
                 </div>
 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingInput">No Telp</label>
+                    <label htmlFor="floatingInput">No Telepon *</label>
                     <input
                         id="floatingInput"
                         name="noTelp"
                         type="text"  
                         className="form-control"
                         required                                                                                
-                        placeholder="No Telp"
+                        placeholder="No Telepon"
                         onChange={handleNoTelpChange}
                     />
                 </div>
                 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingPassword">Foto Profil Usaha</label>
+                    <label htmlFor="floatingPassword">Foto Profil Usaha *</label>
                     <input
                         id="floatingPassword"
                         name="image"
                         type="file"  
                         className="form-control"
                         required                                                                                
-                        placeholder="Password"
+                        placeholder="Foto Profil Usaha"
                         onChange={handleImageChange}
                     />
                 </div>
 
                 <div className="form-floating pb-3">
-                    <label htmlFor="floatingPassword">Foto Tambahan Untuk Galeri{'('}Bisa lebih dari 1{')'}</label>
+                    <label htmlFor="floatingPassword">Foto Tambahan Untuk Galeri *</label> <br />
+                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Bisa lebih dari 1</span> <br />
+                    <span className='mb-1' style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Untuk gambar produk atau jasa</span> <br />
                     <input
                         id="floatingPassword"
                         name="gambarUsaha"
@@ -268,11 +285,12 @@ const SubmitForm = () => {
                         className="form-control"
                         accept="image/*"
                         required                                                                                
-                        placeholder="Password"
+                        placeholder="Bisa lebih dari 1 gambar"
                         multiple onChange={handleGalleryChange}
                     />
                 </div>
 
+                <p style={{color: "red"}}>Field dengan * harus diisi</p>
                 <button className="btn btn-primary w-100 py-2" type="submit" onClick={handleSubmit}>Submit</button>
             </form>
         </main>

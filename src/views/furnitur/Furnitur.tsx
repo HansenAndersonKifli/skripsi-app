@@ -225,7 +225,7 @@ const Furnitur: React.FC = () => {
 
   return (
     <div>
-      <h2>Data Usaha</h2>
+      <h2>Furnitur</h2>
       {/* <div>
         {data.map((item) => (
           <div

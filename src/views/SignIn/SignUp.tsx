@@ -34,16 +34,21 @@ const Signup = () => {
             return;
         }
      
-        try{
-            const credential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = credential.user;
-            console.log("sukses");
-            navigate("/")
-        }catch(error){
-            // const errorCode = error.code;
-            // const errorMessage = error.message;
-            // console.log(errorCode, errorMessage);
+        const isConfirmed = window.confirm('Apakah Anda sudah yakin ingin mendaftarkan akun?')
+        if(isConfirmed){
+            try{
+                const credential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = credential.user;
+                console.log("sukses");
+                alert('Akun berhasil dibuat!');
+                navigate("/")
+            }catch(error){
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
+                // console.log(errorCode, errorMessage);
+            }
         }
+        
         // await createUserWithEmailAndPassword(auth, email, password)
         //     .then((userCredential) => {
         //         // Signed in
@@ -150,7 +155,7 @@ const Signup = () => {
                 className="btn btn-primary w-100 py-2" 
                 type="submit" 
                 onClick={onSubmit} >
-                    Sign in
+                    Sign Up
             </button>
         </form>
         <p className="text-sm text-black text-center">

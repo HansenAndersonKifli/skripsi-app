@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const MenuItems = ({ items, depthLevel }: {items: any, depthLevel: any}) => {
   const [dropdown, setDropdown] = useState(false);
 
+  //ref buat dapetin referensi ke DOM
   let ref = useRef<any>();
 
   useEffect(() => {
@@ -21,7 +22,6 @@ const MenuItems = ({ items, depthLevel }: {items: any, depthLevel: any}) => {
     document.addEventListener('mousedown', handler);
     document.addEventListener('touchstart', handler);
     return () => {
-      // Cleanup the event listener
       document.removeEventListener('mousedown', handler);
       document.removeEventListener('touchstart', handler);
     };
@@ -59,7 +59,6 @@ const MenuItems = ({ items, depthLevel }: {items: any, depthLevel: any}) => {
               items.title
             ) : (
               <Link to={items.url}>{items.title}</Link>
-              // <Link to={'$items.title.toLowerCase()'}>{items.title}</Link>
               )}
               
             {depthLevel > 0 &&

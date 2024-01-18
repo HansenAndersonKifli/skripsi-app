@@ -60,22 +60,27 @@ const Login = () => {
             return;
         }
 
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            navigate("/")
-            console.log(user);
-            console.log("email: ", user.email)
-            // console.log(setLogin);
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert('Akun tidak terdaftar. Silakan sign up terlebih dahulu.');
-            
-            console.log(errorCode, errorMessage)
-        });
+        const isConfirmed = window.confirm('Apakah Anda yakin ingin masuk?')
+        if(isConfirmed){
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                alert('Selamat Datang diToko Lokal!');
+                navigate("/")
+                console.log(user);
+                console.log("email: ", user.email)
+                // console.log(setLogin);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert('Akun tidak terdaftar. Silakan sign up terlebih dahulu.');
+                
+                console.log(errorCode, errorMessage)
+            });
+        }
+        
     }
 
     const handleLogout = () => {               
