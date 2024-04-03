@@ -23,98 +23,98 @@ const Profile = () => {
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<any>(null);
 
-    const tableColumnSetting = [
-        {
-          title: 'No',
-          columnName: 'index',
-          width: '20px',
-        },
-        {
-          title: 'Nama Usaha',
-          columnName: 'namaUsaha',
-          width: '150px',
-        },
-        {
-          title: 'Lokasi Usaha',
-          columnName: 'lokasiUsaha',
-          width: '60px',
-        },
-        {
-          title: 'Kategori',
-          columnName: 'kategori',
-          width: '50px',
-        },
-        {
-          title: 'No Telp',
-          columnName: 'noTelp',
-          width: '80px',
-        },
-        {
-          title: 'Deskripsi Usaha',
-          columnName: 'deskripsiUsaha',
-          width: '100px',
-        },
-        {
-          title: 'Usaha Ditampilkan Oleh Admin?',
-          columnName: 'Usaha Ditampilkan Oleh Admin?',
-          width: '50px',
-        },
-        {
-          title: 'Opsi',
-          columnName: 'opsi',
-          width: '50px',
-        },
-      ];
-      
-    useEffect(() => {
-        const fetchData = async () => {
-            const q = query(collection(db, "dataUsaha"), where("usahaUserUID", "==", currentUser?.uid)
-            );
-
-            const querySnapshot = await getDocs(q);
-            const newData = querySnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as IData[];
-      
-            setData(newData);
-            // console.log("newData", newData);
-        };
+  const tableColumnSetting = [
+      {
+        title: 'No',
+        columnName: 'index',
+        width: '20px',
+      },
+      {
+        title: 'Nama Usaha',
+        columnName: 'namaUsaha',
+        width: '150px',
+      },
+      {
+        title: 'Lokasi Usaha',
+        columnName: 'lokasiUsaha',
+        width: '60px',
+      },
+      {
+        title: 'Kategori',
+        columnName: 'kategori',
+        width: '50px',
+      },
+      {
+        title: 'No Telp',
+        columnName: 'noTelp',
+        width: '80px',
+      },
+      {
+        title: 'Deskripsi Usaha',
+        columnName: 'deskripsiUsaha',
+        width: '100px',
+      },
+      {
+        title: 'Usaha Ditampilkan Oleh Admin?',
+        columnName: 'Usaha Ditampilkan Oleh Admin?',
+        width: '50px',
+      },
+      {
+        title: 'Opsi',
+        columnName: 'opsi',
+        width: '50px',
+      },
+    ];
     
-        fetchData();
-      }, []);
-
-    const tableColumn = () => {
-        return (
-            <>
-              <thead className="px-5 py-3">
-                <tr>
-                  {tableColumnSetting.map((row, index) => {
-                    const width = row.width || "";
-                    // console.log("width",row.width);
-                    return (
-                      <th
-                        id={`tr-${index}`}
-                        key={index}
-                        style={{
-                          width,
-                          verticalAlign: "middle",
-                          paddingBottom: "15px",
-                          // borderBottom: "0",
-                          backgroundColor: "#FFFFFF",
-                          fontSize: "13px",
-                          textAlign: "center",
-                          borderRadius: "100%"
-                        }}
-                      >
-                        {row.title}
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-            </>
+  useEffect(() => {
+      const fetchData = async () => {
+          const q = query(collection(db, "dataUsaha"), where("usahaUserUID", "==", currentUser?.uid)
           );
+
+          const querySnapshot = await getDocs(q);
+          const newData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as IData[];
+    
+          setData(newData);
+          // console.log("newData", newData);
+      };
+  
+      fetchData();
+    }, []);
+
+  const tableColumn = () => {
+      return (
+          <>
+            <thead className="px-5 py-3">
+              <tr>
+                {tableColumnSetting.map((row, index) => {
+                  const width = row.width || "";
+                  // console.log("width",row.width);
+                  return (
+                    <th
+                      id={`tr-${index}`}
+                      key={index}
+                      style={{
+                        width,
+                        verticalAlign: "middle",
+                        paddingBottom: "15px",
+                        // borderBottom: "0",
+                        backgroundColor: "#FFFFFF",
+                        fontSize: "13px",
+                        textAlign: "center",
+                        borderRadius: "100%"
+                      }}
+                    >
+                      {row.title}
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+          </>
+        );
     }
 
     const editData = (item: any) => {
@@ -225,7 +225,9 @@ const Profile = () => {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <h3>Halo! {currentUser?.email}</h3>
         {/* <p>Sign In Status: {currentUser && 'active'}</p> */}
-          <button style={{ marginLeft: 'auto' }}  onClick={signOut}>Sign Out</button>
+          {/* <button style={{ marginLeft: 'auto' }}  onClick={signOut}>Sign Out</button> */}
+          
+          <button className="btn btn-primary" style={{ marginLeft: 'auto' }} onClick={signOut}>Sign Out</button>
       </div>
       <p>Tabel Usaha Anda</p>
       <Table bordered striped hover className="C--table type--2 mb-4">

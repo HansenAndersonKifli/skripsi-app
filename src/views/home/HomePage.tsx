@@ -20,12 +20,10 @@ interface IData {
 }
 
 function HomePage() {
-  const [token, setToken] = useState();
+  // const [token, setToken] = useState();
   const navigate = useNavigate();
-  const { title } = useParams();
+  // const { title } = useParams();
   const [data, setData] = useState<IData[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  let PageSize = 10;
 
 
   // if(!token) {
@@ -35,8 +33,8 @@ function HomePage() {
   const cardsData = [
     {
       imgUrl: 'test foto.png',
-      imgTitle: 'Toko Mebel Sanjaya',
-      desc: 'Toko Furniture yang menjual berbagai macam furnitur seperti meja, kasur, lemari dan lainnya',
+      imgTitle: 'Kartu 1',
+      desc: 'Deskripsi Kartu 1',
       loc: 'jl. abc'
     },
     {
@@ -57,14 +55,9 @@ function HomePage() {
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
-        // ...
         console.log("uid", uid)
       } else {
-        // User is signed out
-        // ...
         console.log("user is logged out")
       }
     });
@@ -90,7 +83,6 @@ function HomePage() {
       console.log("newData: ", newData);
     }
     fetchData()
-    // make sure to catch any error
     .catch(console.error);
 
   
@@ -107,7 +99,7 @@ function HomePage() {
 
   return (
     <>
-    <h2>Home</h2>
+    <h2 style={{color: 'blue'}}>Home</h2>
 
     <div className="cards-container">
       {data.map((card, index) => (

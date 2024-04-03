@@ -43,6 +43,7 @@ const App = () => {
 
   return (
     <>
+    {/* router */}
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />

@@ -8,3 +8,8 @@
         width: 100%;
     }
 }
+
+.content-container {
+    /* background-color: grey; */
+    min-height: 100vh;
+}

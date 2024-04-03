@@ -235,8 +235,6 @@ const SubmitForm = () => {
 
                 <div className="form-floating pb-3">
                     <label htmlFor="floatingInput">Lokasi Usaha * </label><br />
-                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Awali Dengan "Jalan"</span> <br />
-                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Contoh: "Jalan Dokter Muwardi" & "Jalan Dokter Makaliwe Gang II, RW 08, Grogol, Grogol Petamburan, West Jakarta, Special Capital Region of Jakarta, Java, 11450, Indonesia"</span> <br />
                     <input
                         id="floatingInput"
                         name="lokasiUsaha"
@@ -246,6 +244,8 @@ const SubmitForm = () => {
                         placeholder="Lokasi Usaha"
                         onChange={handleLokasiUsahaChange}
                     />
+                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Awali Dengan "Jalan"</span> <br />
+                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Contoh: "Jalan Dokter Muwardi" & "Jalan Dokter Makaliwe Gang II, RW 08, Grogol, Grogol Petamburan, West Jakarta, Special Capital Region of Jakarta, Java, 11450, Indonesia"</span> <br />
                 </div>
 
                 <div className="form-floating pb-3">
@@ -276,8 +276,6 @@ const SubmitForm = () => {
 
                 <div className="form-floating pb-3">
                     <label htmlFor="floatingPassword">Foto Tambahan Untuk Galeri *</label> <br />
-                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Bisa lebih dari 1</span> <br />
-                    <span className='mb-1' style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Untuk gambar produk atau jasa</span> <br />
                     <input
                         id="floatingPassword"
                         name="gambarUsaha"
@@ -288,6 +286,8 @@ const SubmitForm = () => {
                         placeholder="Bisa lebih dari 1 gambar"
                         multiple onChange={handleGalleryChange}
                     />
+                    <span style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Bisa lebih dari 1</span> <br />
+                    <span className='mb-1' style={{ color: 'red', marginLeft: '5px', fontSize: '12px' }}>-Untuk gambar produk atau jasa</span> <br />
                 </div>
 
                 <p style={{color: "red"}}>Field dengan * harus diisi</p>

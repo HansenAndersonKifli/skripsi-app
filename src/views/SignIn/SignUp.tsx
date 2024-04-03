@@ -25,9 +25,9 @@ const Signup = () => {
 
             /.../ adalah literal reguler. Dalam hal ini, itu digunakan untuk membungkus ekspresi reguler.
 
-            .test(password) adalah metode pada objek ekspresi reguler yang menguji apakah ekspresi reguler cocok dengan string yang diberikan (password dalam hal ini).
+            .test(password) adalah metode pada objek ekspresi reguler yang menguji apakah ekspresi reguler cocok dengan string yang diberikan.
             
-            ! adalah operator negasi. Itu membalik nilai kebenaran. Jadi, !/\d/.test(password) akan benar jika /\d/.test(password) adalah salah, yang berarti password tidak mengandung setidaknya satu digit.
+            ! adalah operator negasi. Jadi, !/\d/.test(password) akan benar jika /\d/.test(password) adalah salah, yang berarti password tidak mengandung setidaknya satu digit.
         */
         if (password.length < 6 || !/\d/.test(password)) {
             alert('Password harus memiliki setidaknya 6 karakter dan mengandung angka');

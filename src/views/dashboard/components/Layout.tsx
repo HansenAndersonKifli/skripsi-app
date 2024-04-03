@@ -4,7 +4,7 @@ import './Layout.css'
 
 const Layout = () => {
   return (
-    <div>
+    <div className='content-container'>
       <Header />
         <div className="content">
             {/* buat render route */}
